@@ -2,6 +2,9 @@ from time import sleep
 import os
 import csv
 from itertools import islice
+from colorama import Fore, Back, Style, init
+
+init()
 
 def validar_entradas_string(mensagem, tipo=str):
     while True:
@@ -9,10 +12,10 @@ def validar_entradas_string(mensagem, tipo=str):
             print('-'*10)
             escrita = (input(mensagem))
             if not escrita.replace(' ', '').isalpha():
-                raise ValueError('Digite apenas letras e espaços.')
+                raise ValueError(f'Digite apenas letras e espaços.')
             return escrita.title()
         except ValueError as e:
-            print(f'\nErro: {e}\nDigite novamente!')
+            print(f'\n{Fore.RED}Erro:{Style.RESET_ALL} {e}\n{Fore.YELLOW}Digite novamente!{Style.RESET_ALL}')
             
 def validar_respostas_numericas(mensagem, tipo=int, min_val=None, max_val=None):
     while True:
@@ -96,18 +99,18 @@ def tmb(sexo, idade, peso):
 
 def main():
     print('\n')
-    print(f'{" CAIOBA's HEALTH ":-^40}')
+    print(f'{f"{Fore.GREEN} CAIOBA's HEALTH {Style.RESET_ALL}":-^50}')
     print('Olá, amigo!'.center(42))
     print('Se entrou aqui, imagino que queira'.center(40))
     print('melhorar sua alimentação!'.center(40))
-    print('-'*40)
+    print('-'*41)
     sleep(4.0)
     
     os.system('cls' if os.name == 'nt' else 'clear')
     
     while True:
         print('-'*10)
-        resp = str(input('Deseja criar uma dieta para\nmelhorar sua qualidade de vida? ')).lower().strip()[0]
+        resp = str(input(f'Deseja criar uma {Fore.GREEN}dieta{Style.RESET_ALL} para\nmelhorar sua qualidade de vida? ')).lower().strip()[0]
         if resp not in ['s', 'n']:
             print('Resposta inválida! Digite S ou N.')
             continue
@@ -117,7 +120,7 @@ def main():
         
         print('\nHm...\n')
         sleep(1.3)
-        print('Okay! Então vamos nessa!')
+        print('Beleza! Então vamos nessa!')
         sleep(1.2)
         
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -130,7 +133,7 @@ def main():
         while sexo not in ['m', 'f']:
             sexo = str(input(f'Digite seu sexo [M/F]: ')).strip().lower()[0]
             if sexo not in ['m', 'f']:
-                print('Resposta inválida.')
+                print(f'{Fore.RED}Resposta inválida.{Style.RESET_ALL}')
                 print('-'*10)
                 
         print('-'*10)
@@ -140,29 +143,40 @@ def main():
         print('-'*10)
         altura = validar_respostas_numericas('Digite sua altura (cm): ', min_val=50, max_val=240)
         print('-'*10)
-        sleep(1.3)
+        for i in range(1, 4):
+            sleep(0.5)
+            print('.', end='', flush=True)
         
         os.system('cls' if os.name == 'nt' else 'clear')
         
         print('-'*10)
-        print('Para calculcar o seu GET (Gasto de Energia Total),\nescolha a opção que descreve seu nível de atividade física:')
+        print(f'Para calculcar o seu {Fore.GREEN}GET{Style.RESET_ALL} (Gasto de Energia Total),\nescolha a opção que descreve seu nível de atividade física:')
         print('-'*30)
-        print('[1] Sedentário\n[2] Levemente ativo\n[3] Moderadamente ativo\n[4] Muito ativo\n[5] Extremamente ativo')
+        print(f'{Fore.YELLOW}[1] Sedentário\n[2] Levemente ativo\n[3] Moderadamente ativo\n[4] Muito ativo\n[5] Extremamente ativo{Style.RESET_ALL}')
         print('-'*30)
         fator_ativ = validar_respostas_numericas('  >>>>> Digite sua opção (1-5): ', min_val=1, max_val=5)
-        sleep(1.3)
+        
+        for i in range(1, 4):
+            sleep(0.5)
+            print('.', end='', flush=True)
         
         os.system('cls' if os.name == 'nt' else 'clear')
 
         get = tmb(sexo, idade, peso) * [1.2, 1.375, 1.55, 1.725, 1.9][fator_ativ-1]
-        print(f'O seu GET corresponde a {get:.0f}kcal/dia!')
+        print(f'O seu {Fore.GREEN}GET{Style.RESET_ALL} corresponde a {get:.0f}kcal/dia!')
         
         print('-'*20)
         print(f'Agora é preciso definir qual o seu objetivo:')
         print('-'*20)
-        print('[1] Perder peso \n[2] Ganhar peso \n[3] Manter peso')
+        print(f'{Fore.YELLOW}[1] Perder peso \n[2] Ganhar peso \n[3] Manter peso{Style.RESET_ALL}')
+        print('-'*20)
         obj = validar_respostas_numericas('  >>>>> Digite sua opção (1-3): ', min_val=1, max_val=3)
+        
+        for i in range(1, 4):
+            sleep(0.5)
+            print('.', end='', flush=True)
 
+        print('')
         print('-'*10)
         match obj:
             case 1:
@@ -175,12 +189,17 @@ def main():
                 kcal_dia = get
                 print(f'Para manter seu peso, será necessário ingerir {kcal_dia:.0f}kcal por dia')
         print('-'*10)
-        print('\nGERANDO SUA DIETA...\n')
-        sleep(2.5)
+        print(f'\n{Fore.GREEN}GERANDO SUA DIETA{Style.RESET_ALL}', end='')
+        
+        for i in range(1, 4):
+            sleep(1)
+            print('.', end='', flush=True)
+            
+        print('-'*10)
                 
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        print('\nAqui está sua dieta personalizada!\n')
+        print(f'\n{Fore.GREEN}Aqui está sua dieta personalizada!{Style.RESET_ALL}\n')
         dieta_c = dieta(kcal_dia)
         for linha in dieta_c:
             print(linha)
